@@ -21,6 +21,9 @@ static SocketConnList *vfork_socketConnList = NULL;
 void
 dmtcp_SocketConnList_EventHook(DmtcpEvent_t event, DmtcpEventData_t *data)
 {
+  // Necesary in case the application need to use mpich with sockets in some implementations
+  // remove to make it work the ckpt/restart of sockets
+  return;
   SocketConnList::instance().eventHook(event, data);
 
   switch (event) {
