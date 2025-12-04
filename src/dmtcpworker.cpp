@@ -492,6 +492,8 @@ DmtcpWorker::postCheckpoint()
 
   CoordinatorAPI::sendCkptFilename();
 
+  PluginManager::eventHook(DMTCP_EVENT_POSTCHECKPOINT);
+
   if (exitAfterCkpt) {
     JTRACE("Asked to exit after checkpoint. Exiting!");
     _exit(0);

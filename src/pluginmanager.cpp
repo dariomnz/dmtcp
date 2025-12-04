@@ -71,11 +71,104 @@ dmtcp_initialize_plugin()
   }
 }
 
+static void printEvent(DmtcpEvent_t event)
+{
+  switch (event) {
+    case DMTCP_EVENT_INIT:
+      fprintf(stderr, "DMTCP_EVENT_INIT\n");
+      break;
+    case DMTCP_EVENT_EXIT:
+      fprintf(stderr, "DMTCP_EVENT_EXIT\n");
+      break;
+    case DMTCP_EVENT_PRE_EXEC:
+      fprintf(stderr, "DMTCP_EVENT_PRE_EXEC\n");
+      break;
+    case DMTCP_EVENT_POST_EXEC:
+      fprintf(stderr, "DMTCP_EVENT_POST_EXEC\n");
+      break;
+    case DMTCP_EVENT_ATFORK_PREPARE:
+      fprintf(stderr, "DMTCP_EVENT_ATFORK_PREPARE\n");
+      break;
+    case DMTCP_EVENT_ATFORK_PARENT:
+      fprintf(stderr, "DMTCP_EVENT_ATFORK_PARENT\n");
+      break;
+    case DMTCP_EVENT_ATFORK_CHILD:
+      fprintf(stderr, "DMTCP_EVENT_ATFORK_CHILD\n");
+      break;
+    case DMTCP_EVENT_ATFORK_FAILED:
+      fprintf(stderr, "DMTCP_EVENT_ATFORK_FAILED\n");
+      break;
+    case DMTCP_EVENT_VFORK_PREPARE:
+      fprintf(stderr, "DMTCP_EVENT_VFORK_PREPARE\n");
+      break;
+    case DMTCP_EVENT_VFORK_PARENT:
+      fprintf(stderr, "DMTCP_EVENT_VFORK_PARENT\n");
+      break;
+    case DMTCP_EVENT_VFORK_CHILD:
+      fprintf(stderr, "DMTCP_EVENT_VFORK_CHILD\n");
+      break;
+    case DMTCP_EVENT_VFORK_FAILED:
+      fprintf(stderr, "DMTCP_EVENT_VFORK_FAILED\n");
+      break;
+    case DMTCP_EVENT_PTHREAD_START:
+      fprintf(stderr, "DMTCP_EVENT_PTHREAD_START\n");
+      break;
+    case DMTCP_EVENT_PTHREAD_EXIT:
+      fprintf(stderr, "DMTCP_EVENT_PTHREAD_EXIT\n");
+      break;
+    case DMTCP_EVENT_PTHREAD_RETURN:
+      fprintf(stderr, "DMTCP_EVENT_PTHREAD_RETURN\n");
+      break;
+    case DMTCP_EVENT_PRESUSPEND:
+      fprintf(stderr, "DMTCP_EVENT_PRESUSPEND\n");
+      break;
+    case DMTCP_EVENT_PRECHECKPOINT:
+      fprintf(stderr, "DMTCP_EVENT_PRECHECKPOINT\n");
+      break;
+    case DMTCP_EVENT_POSTCHECKPOINT:
+      fprintf(stderr, "DMTCP_EVENT_POSTCHECKPOINT\n");
+      break;
+    case DMTCP_EVENT_RESUME:
+      fprintf(stderr, "DMTCP_EVENT_RESUME\n");
+      break;
+    case DMTCP_EVENT_RESTART:
+      fprintf(stderr, "DMTCP_EVENT_RESTART\n");
+      break;
+    case DMTCP_EVENT_RUNNING:
+      fprintf(stderr, "DMTCP_EVENT_RUNNING\n");
+      break;
+    case DMTCP_EVENT_THREAD_RESUME:
+      fprintf(stderr, "DMTCP_EVENT_THREAD_RESUME\n");
+      break;
+    case DMTCP_EVENT_OPEN_FD:
+      fprintf(stderr, "DMTCP_EVENT_OPEN_FD\n");
+      break;
+    case DMTCP_EVENT_REOPEN_FD:
+      fprintf(stderr, "DMTCP_EVENT_REOPEN_FD\n");
+      break;
+    case DMTCP_EVENT_CLOSE_FD:
+      fprintf(stderr, "DMTCP_EVENT_CLOSE_FD\n");
+      break;
+    case DMTCP_EVENT_DUP_FD:
+      fprintf(stderr, "DMTCP_EVENT_DUP_FD\n");
+      break;
+    case DMTCP_EVENT_VIRTUAL_TO_REAL_PATH:
+      fprintf(stderr, "DMTCP_EVENT_VIRTUAL_TO_REAL_PATH\n");
+      break;
+    case DMTCP_EVENT_REAL_TO_VIRTUAL_PATH:
+      fprintf(stderr, "DMTCP_EVENT_REAL_TO_VIRTUAL_PATH\n");
+      break;
+    case nDmtcpEvents:
+      fprintf(stderr, "nDmtcpEvents\n");
+      break;
+  }
+}
+
 void
 PluginManager::eventHook(DmtcpEvent_t event, DmtcpEventData_t *data)
 {
   PluginManager::initialize();
-
+  // printEvent(event);
   switch (event) {
   // The following events are processed in the order of plugin registration.
   case DMTCP_EVENT_INIT:
@@ -120,6 +213,7 @@ PluginManager::eventHook(DmtcpEvent_t event, DmtcpEventData_t *data)
   case DMTCP_EVENT_VFORK_CHILD:
   case DMTCP_EVENT_VFORK_FAILED:
   case DMTCP_EVENT_REAL_TO_VIRTUAL_PATH:
+  case DMTCP_EVENT_POSTCHECKPOINT:
   case DMTCP_EVENT_RESUME:
   case DMTCP_EVENT_RESTART:
   case DMTCP_EVENT_THREAD_RESUME:
