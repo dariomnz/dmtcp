@@ -1,5 +1,6 @@
 #include <sys/syscall.h>
 #include <unistd.h>
+#include <cstdlib>
 
 #include "jfilesystem.h"
 #include "connectionrewirer.h"
@@ -21,6 +22,11 @@ static SocketConnList *vfork_socketConnList = NULL;
 void
 dmtcp_SocketConnList_EventHook(DmtcpEvent_t event, DmtcpEventData_t *data)
 {
+  if (std::getenv("DMTCP_CKPT_SOCKET") == nullptr){
+    // Necesary in case the application need to use mpich with sockets in some implementations
+    // remove to make it work the ckpt/restart of sockets
+    return;
+  }
   SocketConnList::instance().eventHook(event, data);
 
   switch (event) {
