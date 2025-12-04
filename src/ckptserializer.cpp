@@ -201,7 +201,7 @@ perform_open_ckpt_image_fd(const char *tempCkptFilename,
   /* 1. Open fd to checkpoint image on disk */
   /* Create temp checkpoint file and write magic number to it */
   int flags = O_CREAT | O_TRUNC | O_WRONLY;
-  int fd = _real_open(tempCkptFilename, flags, 0600);
+  int fd = open(tempCkptFilename, flags, 0600);
   *fdCkptFileOnDisk = fd; /* if use_compression, fd will be reset to pipe */
   JASSERT(fd != -1) (tempCkptFilename) (JASSERT_ERRNO)
   .Text("Error creating file.");
@@ -416,7 +416,7 @@ CkptSerializer::writeCkptImage(DmtcpCkptHeader ckptHdr,
     /* IF OUT OF DISK SPACE, REPORT IT HERE. */
     JASSERT(fsync(fdCkptFileOnDisk) != -1) (JASSERT_ERRNO)
     .Text("(compression): fsync error on checkpoint file");
-    JASSERT(_real_close(fdCkptFileOnDisk) == 0) (JASSERT_ERRNO)
+    JASSERT(close(fdCkptFileOnDisk) == 0) (JASSERT_ERRNO)
     .Text("(compression): error closing checkpoint file.");
   }
 

@@ -477,10 +477,10 @@ writememoryarea(int fd, Area area)
    * code and that should reset the /proc/self/maps files to its original
    * condition.
    */
-  if ((area.prot & PROT_READ) == 0) {
-    JASSERT(mprotect(area.addr, area.size, area.prot | PROT_READ) == 0)
+  if ((area.prot & PROT_READ) == 0 || (area.prot & PROT_WRITE) == 0) {
+    JASSERT(mprotect(area.addr, area.size, area.prot | PROT_READ | PROT_WRITE) == 0)
       (JASSERT_ERRNO) (area.size) ((void*)area.addr)
-      .Text("error adding PROT_READ to mem region");
+      .Text("error adding PROT_READ and PROT_WRITE to mem region");
   }
 
   if ((area.flags & MAP_ANONYMOUS) != 0) {
@@ -517,7 +517,7 @@ writememoryarea(int fd, Area area)
 
   
   // Now remove PROT_READ from the area if it didn't have it originally
-  if ((area.prot & PROT_READ) == 0) {
+  if ((area.prot & PROT_READ) == 0 || (area.prot & PROT_WRITE) == 0) {
     JASSERT(mprotect(area.addr, area.size, area.prot) == 0)
       (JASSERT_ERRNO) ((void*)area.addr) (area.size)
       .Text("error removing PROT_READ from mem region.");
